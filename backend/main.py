@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
@@ -21,14 +22,22 @@ async def startup_event():
     init_db()
     logger.info("Database initialized")
 
-# Enable CORS for frontend (Next.js typically runs on port 3000)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+# Enable CORS for frontend
+# Get allowed origins from environment variable (for production) or use defaults
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")
+allowed_origins = (
+    [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+    if allowed_origins_str
+    else [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:3001",  # Sometimes Next.js uses 3001 if 3000 is busy
-    ],
+    ]
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
