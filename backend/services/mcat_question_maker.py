@@ -37,9 +37,10 @@ class MCATQuestionMaker:
             - At the difficulty level appropriate for the MCAT
             - The question stem and answer choices should be unambiguous and clear.  
             - Have exactly 4 answer choices
-            - Include a clear explanation for the correct answer. the explanation shuold be from first principles.
+            - Include a clear explanation for the correct answer. the explanation shuold be from first principles and contain a clear and relatable example.
             - Tagged with relevant concept tags
             - Categorized by MCAT subject and subtopic
+
 
             IMPORTANT FORMATTING RULES:
             - answer_choices: Array of exactly 4 strings WITHOUT letter prefixes (A), B), etc.). Just the answer text.
@@ -139,6 +140,7 @@ class MCATQuestionMaker:
 
     def _parse_response(self, response_text: str) -> List[dict]:
         """Parse the OpenRouter response and extract JSON."""
+        logger.info(f"Response text: {response_text}")
         # Clean up markdown code blocks if present
         response_text = response_text.strip()
         if response_text.startswith("```json"):
