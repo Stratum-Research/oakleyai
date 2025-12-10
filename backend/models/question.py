@@ -27,5 +27,5 @@ class Question(BaseModel):
     subject_subtopic: str = Field(
         ..., description="Specific subtopic within the subject"
     )
-    db_id: str | None = Field(default=None, description="UUID from database")
+    # db_id: str | None = Field(default=None, description="UUID from database")
     query_id: str | None = Field(default=None, description="UUID of the query")
