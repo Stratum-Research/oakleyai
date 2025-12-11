@@ -20,6 +20,11 @@
       "dest": "/frontend/$1"
     }
   ],
+  "functions": {
+    "api/[...path].py": {
+      "runtime": "python3.11"
+    }
+  },
   "env": {
     "NEXT_PUBLIC_API_URL": "/api"
   }
