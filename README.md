@@ -221,33 +221,41 @@ python -m uvicorn main:app --reload  # Run with auto-reload
 
 ## Deployment
 
-### Frontend (Vercel)
+### Vercel Monorepo Deployment
 
-The frontend is configured for Vercel deployment:
+This project is configured as a Vercel monorepo, deploying both frontend and backend together:
 
 1. **Push your code to GitHub**
+
 2. **Import project to Vercel:**
    - Go to [vercel.com](https://vercel.com)
    - Click "New Project"
    - Import your repository
-   - Set root directory to `frontend`
-   - Add environment variable: `NEXT_PUBLIC_API_URL` (your backend API URL)
+   - **Root Directory**: Leave as root (don't set to `frontend`)
+   - Vercel will automatically detect the monorepo structure from `vercel.json`
 
-3. **Deploy:**
-   - Vercel will automatically detect Next.js and deploy
-   - The frontend will be available at `https://your-project.vercel.app`
+3. **Configure Environment Variables in Vercel:**
+   - `OPENROUTER_API_KEY`: Your OpenRouter API key
+   - `NEXT_PUBLIC_API_URL`: Set to `/api` (already configured in vercel.json)
+   - `ALLOWED_ORIGINS`: (Optional) Comma-separated list of allowed CORS origins
+   - Any Supabase credentials if using Supabase:
+     - `SUPABASE_URL`
+     - `SUPABASE_KEY`
 
-### Backend Deployment
+4. **Deploy:**
+   - Vercel will automatically:
+     - Build the Next.js frontend from `frontend/`
+     - Deploy Python serverless functions from `api/`
+   - The application will be available at `https://your-project.vercel.app`
+   - Frontend routes: `https://your-project.vercel.app/`
+   - API routes: `https://your-project.vercel.app/api/*`
 
-The backend needs to be deployed separately. Options include:
+### Project Structure for Vercel
 
-- **Railway**: Easy Python deployment
-- **Render**: Free tier available
-- **Fly.io**: Good for Python apps
-- **Heroku**: Traditional option
-- **AWS/GCP/Azure**: For production scale
-
-**Important:** Update `NEXT_PUBLIC_API_URL` in Vercel to point to your deployed backend URL.
+- **Frontend**: Next.js app in `frontend/` directory
+- **Backend**: FastAPI app in `api/` directory, wrapped as serverless functions
+- **Configuration**: Root `vercel.json` handles routing and builds
+- **API Adapter**: `api/[...path].py` wraps FastAPI with Mangum for Vercel compatibility
 
 ## Code Quality
 
