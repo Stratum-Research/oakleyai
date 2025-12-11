@@ -38,3 +38,9 @@ backend/logs/
 *.egg-info/
 dist/
 build/
+
+# Frontend build artifacts
+frontend/.next/
+frontend/node_modules/
+frontend/out/
+frontend/.vercel/
